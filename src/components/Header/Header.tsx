@@ -4,7 +4,7 @@ import { Menu } from 'lucide-react';
 
 import { Button } from '../Button';
 import { NavigationItem } from '../NavigationItem';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/constants';
 
 export type NavType = {
@@ -22,8 +22,11 @@ const Header: React.FC = () => {
   const { pathname } = useLocation();
 
   return (
-    <header className="bg-background sticky top-0 z-40 w-full">
-      <div className="container flex justify-end h-20 items-center">
+    <header className="bg-background sticky top-0 z-40 w-full border-b">
+      <div className="container flex justify-between h-20 items-center">
+        <h1 className="text-3xl">
+          <Link to={ROUTES.EMPLOYEES}>Employees Management</Link>
+        </h1>
         <Button variant="link" className="lg:hidden mr-auto lg:mx-0  items-center" onClick={() => setIsOpened(true)}>
           <Menu size={30} />
         </Button>

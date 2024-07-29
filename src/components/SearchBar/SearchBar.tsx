@@ -18,20 +18,23 @@ const SearchBar: React.FC<OwnProps> = ({ onChange, initialValue = '', className 
   }, [inputValue]);
 
   return (
-    <Input
-      className={`max-w-[20dvw] ${className}`}
-      value={inputValue}
-      onChange={(e) => {
-        setInputValue(e.target.value);
-      }}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          onChange(inputValue);
-        }
-      }}
-      onBlur={() => onChange(inputValue)}
-      placeholder="Search employees..."
-    />
+    <div className="relative w-full">
+      <Input
+        className={`min-w-[300px] xl:max-w-[20dvw] pl-12 ${className}`}
+        value={inputValue}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onChange(inputValue);
+          }
+        }}
+        onBlur={() => onChange(inputValue)}
+        placeholder="Search employees..."
+      />
+      <Search size={25} className="absolute top-1.5 left-2" color="#E2E8F0" />
+    </div>
   );
 };
 

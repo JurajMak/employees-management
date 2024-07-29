@@ -6,4 +6,5 @@ export const ROUTES = {
 
 export const QUERY_KEYS = {
   EMPLOYEES: (searchQuery: string) => ['employeesSearch', searchQuery],
+  GET_EMPLOYEES: (pageParam: number, searchQuery: string) => ['employees', pageParam, searchQuery],
 } as const;

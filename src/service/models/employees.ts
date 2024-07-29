@@ -29,8 +29,7 @@ export type EmployeesResponse = {
   total: number;
 };
 
-export type EmployeesResponseInfinite = {
+export type EmployeesResponse = {
   data: Employees[];
-  nextPageUrl: string | null;
-  prevPageUrl: string | null;
+  pageParam: number;
 };

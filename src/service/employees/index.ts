@@ -18,26 +18,54 @@ export class Employees {
       throw error;
     }
   }
-
-  public static async getEmployeesLazyLoading(pageParam: number = 1): Promise<EmployeesResponseInfinite> {
+  // test function
+  public static async getEmployees(pageParam: number = 1, searchQuery: string = ''): Promise<EmployeesResponse[]> {
     try {
-      const response = await fetch(`${this.endPoint}?page=${pageParam}`);
+      const url = new URL(this.endPoint);
+
+      if (searchQuery) {
+        url.searchParams.append('search', searchQuery);
+      } else {
+        url.searchParams.append('page', pageParam.toString());
+      }
+
+      const response = await fetch(url.toString());
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const data = await response.json();
-      return {
-        data,
-        nextPageUrl: data.next_page_url,
-        prevPageUrl: data.prev_page_url,
-      };
+      return data;
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+      throw error;
+    }
+  }
+
+  public static async getEmployeesLazyLoading(pageParam: number = 1, searchQuery: string = ''): Promise<any> {
+    try {
+      // const response = await fetch(`${this.endPoint}?page=${pageParam}`);
+      const url = new URL(this.endPoint);
+
+      if (searchQuery) {
+        url.searchParams.append('search', searchQuery);
+      } else {
+        url.searchParams.append('page', pageParam.toString());
+      }
+
+      const response = await fetch(url.toString());
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      return data;
     } catch (error) {
       console.error('Error fetching employees:', error);
       throw error;
     }
   }
 }
-
-// const response = await fetch(`${this.endPoint}?search=${searchQuery}&page=${pageParam}`);
