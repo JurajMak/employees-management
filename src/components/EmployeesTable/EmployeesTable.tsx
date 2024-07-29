@@ -2,10 +2,10 @@ import { flexRender, getCoreRowModel, SortingState, useReactTable, VisibilitySta
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../Table';
 import { Employees } from '@/service/employees';
-import { EMPLOYEES_COLUMNS } from './tableColumns';
+import { EMPLOYEES_COLUMNS as columns } from './tableColumns';
 import { debounce } from '@/utils/debounce';
 
-export function EmployeesTable({
+export default function EmployeesTable({
   data,
   fetchNextPage,
   hasNextPage,
@@ -17,8 +17,8 @@ export function EmployeesTable({
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const columns = EMPLOYEES_COLUMNS;
   const tableContainerRef = React.useRef<HTMLDivElement>(null);
+
   const table = useReactTable({
     data,
     columns,
@@ -33,8 +33,8 @@ export function EmployeesTable({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  React.useEffect(() => {
-    const handleScroll = debounce(() => {
+  const handleScroll = React.useCallback(
+    debounce(() => {
       if (!tableContainerRef.current || !hasNextPage) return;
 
       const { scrollTop, scrollHeight, clientHeight } = tableContainerRef.current;
@@ -42,14 +42,18 @@ export function EmployeesTable({
       if (scrollTop + clientHeight >= scrollHeight - 10) {
         fetchNextPage();
       }
-    }, 200);
+    }, 200),
+    [fetchNextPage, hasNextPage],
+  );
 
-    tableContainerRef.current?.addEventListener('scroll', handleScroll);
+  React.useEffect(() => {
+    const currentRef = tableContainerRef.current;
+    currentRef?.addEventListener('scroll', handleScroll);
 
     return () => {
-      tableContainerRef.current?.removeEventListener('scroll', handleScroll);
+      currentRef?.removeEventListener('scroll', handleScroll);
     };
-  }, [fetchNextPage, hasNextPage]);
+  }, [handleScroll]);
 
   return (
     <div className="w-full">
@@ -66,22 +70,6 @@ export function EmployeesTable({
               </TableRow>
             ))}
           </TableHeader>
-          {/* <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    onClick={() => header.column.getToggleSortingHandler()}
-                    className={header.column.getIsSorted() ? `sorted ${header.column.getIsSorted()}` : ''}
-                  >
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    <span>{header.column.getIsSorted() === 'asc' ? ' 🔼' : ' 🔽'}</span>
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader> */}
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

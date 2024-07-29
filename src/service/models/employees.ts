@@ -13,14 +13,20 @@ export type Employees = {
   manager_id: number | null;
 };
 
-export type EmployeesResponse = {
+type Links = {
+  url: string | null;
+  label: string;
+  active: boolean;
+};
+
+export type Response<T> = {
   current_page: number;
-  data: any;
+  data: T;
   first_page_url: string;
   from: number;
   last_page: number;
   last_page_url: string;
-  links: any[];
+  links: Links[];
   next_page_url: string | null;
   path: string;
   per_page: number;
@@ -29,7 +35,4 @@ export type EmployeesResponse = {
   total: number;
 };
 
-export type EmployeesResponse = {
-  data: Employees[];
-  pageParam: number;
-};
+export type EmployeesResponse = Response<Employees[]>;
