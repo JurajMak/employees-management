@@ -9,9 +9,6 @@ const EmployeesDirectory: React.FC = () => {
 
   const { data, isLoading, fetchNextPage, hasNextPage } = useEmployees(searchQuery);
 
-  // const managerId = data?.pages.flatMap((item) => item.data.map((item) => item.manager_id));
-  // console.log('DATA', managerId);
-
   return (
     <div className="container mb-12">
       <SearchBar initialValue="" onChange={setSearchQuery} />
