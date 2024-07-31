@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom';
 
 export type NavigationItemProps = NavType & {
   pathname: string;
+  onClick?: () => void;
 };
 
-const NavigationItem: React.FC<NavigationItemProps> = ({ path, label, pathname }) => {
+const NavigationItem: React.FC<NavigationItemProps> = ({ path, label, pathname, onClick }) => {
   return (
-    <Button asChild variant={pathname === path ? 'default' : 'link'}>
+    <Button asChild variant={pathname === path ? 'default' : 'link'} onClick={onClick}>
       <Link to={path}>{label}</Link>
     </Button>
   );

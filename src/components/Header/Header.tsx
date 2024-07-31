@@ -1,11 +1,13 @@
 'use client';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Menu } from 'lucide-react';
 
 import { Button } from '../Button';
 import { NavigationItem } from '../NavigationItem';
 import { Link, useLocation } from 'react-router-dom';
 import { ROUTES } from '@/constants';
+
+const DynamicNavModal = lazy(() => import('../NavigationModal/NavigationModal'));
 
 export type NavType = {
   path: string;
@@ -36,7 +38,11 @@ const Header: React.FC = () => {
             <NavigationItem key={item.label} label={item.label} path={item.path} pathname={pathname} />
           ))}
         </div>
-        {/* {isOpened && <DynamicNavModal pathname={pathname} isOpened={isOpened} onClose={() => setIsOpened(false)} />} */}
+        {isOpened && (
+          <Suspense>
+            <DynamicNavModal pathname={pathname} isOpened={isOpened} onClose={() => setIsOpened(false)} />
+          </Suspense>
+        )}
       </div>
     </header>
   );

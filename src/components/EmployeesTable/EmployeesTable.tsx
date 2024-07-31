@@ -1,35 +1,71 @@
 import { flexRender, getCoreRowModel, SortingState, useReactTable, VisibilityState } from '@tanstack/react-table';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../Table';
 import { Employees } from '@/service/employees';
-import { EMPLOYEES_COLUMNS as columns } from './tableColumns';
 import { debounce } from '@/utils/debounce';
+import { Employee } from '@/service/models/employees';
+import { createEmployeeColumns } from './tableColumns';
+import { Skeleton } from '../Skeleton';
+
+const EmployeeModal = lazy(() => import('../EmployeeModal/EmployeeModal'));
 
 export default function EmployeesTable({
   data,
   fetchNextPage,
   hasNextPage,
+  isLoading,
 }: {
   data: Employees[];
   fetchNextPage: () => void;
   hasNextPage: boolean;
+  isLoading: boolean;
 }) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  // const [sorting, setSorting] = React.useState<SortingState>([]);
+  // const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  // const [rowSelection, setRowSelection] = React.useState({});
   const tableContainerRef = React.useRef<HTMLDivElement>(null);
+  const [selectedEmployee, setSelectedEmployee] = React.useState<Employee | null>(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const columnsData = createEmployeeColumns(handleOpenModal);
+
+  function handleOpenModal(employee: Employee) {
+    if (employee) {
+      setSelectedEmployee(employee);
+    }
+
+    setIsModalOpen(true);
+  }
+
+  function handleCloseModal() {
+    setSelectedEmployee(null);
+    setIsModalOpen(false);
+  }
+
+  const tableData = React.useMemo(() => (isLoading ? Array(10).fill({}) : data), [isLoading, data]);
+
+  const tableColumns = React.useMemo(
+    () =>
+      isLoading
+        ? columnsData.map((column) => ({
+            ...column,
+            cell: () => <Skeleton className="h-8 m-2 " />,
+          }))
+        : columnsData,
+    [isLoading],
+  );
 
   const table = useReactTable({
-    data,
-    columns,
-    state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-    },
-    onSortingChange: setSorting,
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
+    data: tableData,
+    columns: tableColumns,
+    // state: {
+    //   sorting,
+    //   columnVisibility,
+    //   rowSelection,
+    // },
+    // onSortingChange: setSorting,
+    // onColumnVisibilityChange: setColumnVisibility,
+    // onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -81,7 +117,7 @@ export default function EmployeesTable({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell colSpan={table.getAllColumns().length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -89,6 +125,11 @@ export default function EmployeesTable({
           </TableBody>
         </Table>
       </div>
+      {isModalOpen && (
+        <Suspense fallback={null}>
+          <EmployeeModal isOpened={isModalOpen} handleClose={handleCloseModal} employee={selectedEmployee} />
+        </Suspense>
+      )}
     </div>
   );
 }

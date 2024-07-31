@@ -1,4 +1,4 @@
-export type Employees = {
+export type Employee = {
   id: number;
   firstName: string;
   lastName: string;
@@ -35,4 +35,4 @@ export type Response<T> = {
   total: number;
 };
 
-export type EmployeesResponse = Response<Employees[]>;
+export type EmployeesResponse = Response<Employee[]>;

@@ -7,7 +7,10 @@ import React from 'react';
 const EmployeesDirectory: React.FC = () => {
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  const { data, isSuccess, fetchNextPage, hasNextPage } = useEmployees(searchQuery);
+  const { data, isLoading, fetchNextPage, hasNextPage } = useEmployees(searchQuery);
+
+  // const managerId = data?.pages.flatMap((item) => item.data.map((item) => item.manager_id));
+  // console.log('DATA', managerId);
 
   return (
     <div className="container mb-12">
@@ -15,9 +18,10 @@ const EmployeesDirectory: React.FC = () => {
 
       <div className="mt-6">
         <EmployeesTable
-          data={(isSuccess && data?.pages.flatMap((page) => page.data)) || []}
+          data={data?.pages.flatMap((page) => page.data) || []}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
+          isLoading={isLoading}
         />
       </div>
     </div>
