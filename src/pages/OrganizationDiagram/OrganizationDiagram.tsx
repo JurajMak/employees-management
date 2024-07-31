@@ -9,8 +9,8 @@ const OrganizationDiagram: React.FC = () => {
 
   return (
     <div>
-      {!isLoading ? (
-        <OrgChart data={data ?? []} isSuccess={isSuccess} />
+      {!isLoading && isSuccess ? (
+        <OrgChart data={data} />
       ) : (
         <div className="flex justify-center items-center h-[60dvh] w-screen">
           <Ellipsis className="animate-ping text-primary" size={150} />
