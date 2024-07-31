@@ -83,11 +83,15 @@ export default function EmployeesTable({
   );
 
   React.useEffect(() => {
-    const currentRef = tableContainerRef.current;
-    currentRef?.addEventListener('scroll', handleScroll);
+    if (tableContainerRef.current) {
+      tableContainerRef.current.addEventListener('scroll', handleScroll);
+    }
 
     return () => {
-      currentRef?.removeEventListener('scroll', handleScroll);
+      if (tableContainerRef.current) {
+        tableContainerRef.current?.removeEventListener('scroll', handleScroll);
+        handleScroll.cancel();
+      }
     };
   }, [handleScroll]);
 

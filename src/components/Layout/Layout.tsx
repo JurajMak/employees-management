@@ -4,13 +4,11 @@ import { Outlet } from 'react-router-dom';
 
 const Layout: React.FC = () => {
   return (
-    <div>
-      <div className="mb-20">
-        <Header />
-      </div>
+    <>
+      <Header />
 
       <Outlet />
-    </div>
+    </>
   );
 };
 

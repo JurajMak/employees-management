@@ -10,7 +10,7 @@ const EmployeesDirectory: React.FC = () => {
   const { data, isLoading, fetchNextPage, hasNextPage } = useEmployees(searchQuery);
 
   return (
-    <div className="container mb-12">
+    <div className="container my-12">
       <SearchBar initialValue="" onChange={setSearchQuery} />
 
       <div className="mt-6">
