@@ -1,4 +1,4 @@
-import { flexRender, getCoreRowModel, SortingState, useReactTable, VisibilityState } from '@tanstack/react-table';
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import React, { lazy, Suspense } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../Table';
 import { Employees } from '@/service/employees';
@@ -20,9 +20,6 @@ export default function EmployeesTable({
   hasNextPage: boolean;
   isLoading: boolean;
 }) {
-  // const [sorting, setSorting] = React.useState<SortingState>([]);
-  // const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  // const [rowSelection, setRowSelection] = React.useState({});
   const tableContainerRef = React.useRef<HTMLDivElement>(null);
   const [selectedEmployee, setSelectedEmployee] = React.useState<Employee | null>(null);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -49,7 +46,7 @@ export default function EmployeesTable({
       isLoading
         ? columnsData.map((column) => ({
             ...column,
-            cell: () => <Skeleton className="h-8 m-2 " />,
+            cell: () => <Skeleton className="h-12 m-2 " />,
           }))
         : columnsData,
     [isLoading],
@@ -58,14 +55,6 @@ export default function EmployeesTable({
   const table = useReactTable({
     data: tableData,
     columns: tableColumns,
-    // state: {
-    //   sorting,
-    //   columnVisibility,
-    //   rowSelection,
-    // },
-    // onSortingChange: setSorting,
-    // onColumnVisibilityChange: setColumnVisibility,
-    // onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
   });
 
@@ -97,7 +86,7 @@ export default function EmployeesTable({
 
   return (
     <div className="w-full">
-      <div className="rounded-md border max-h-[600px] overflow-y-auto" ref={tableContainerRef}>
+      <div className="rounded-md border max-h-[75dvh] overflow-y-auto" ref={tableContainerRef}>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

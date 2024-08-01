@@ -11,7 +11,7 @@ const EmployeesDirectory: React.FC = () => {
 
   return (
     <div className="container my-12">
-      <SearchBar initialValue="" onChange={setSearchQuery} />
+      <SearchBar onChange={setSearchQuery} />
 
       <div className="mt-6">
         <EmployeesTable

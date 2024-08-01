@@ -1,36 +1,20 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { EmployeesResponse, Employee } from '../models/employees';
 
 export class Employees {
-  private static endPoint = 'http://localhost:8000/api/employees';
+  private static axiosInstance: AxiosInstance = axios.create({
+    baseURL: 'http://localhost:8000/api',
+  });
 
   public static async getEmployees(pageParam: number = 1, searchQuery: string = ''): Promise<EmployeesResponse> {
     try {
-      const url = new URL(this.endPoint);
-
-      if (searchQuery) {
-        url.searchParams.append('search', searchQuery);
-      } else {
-        url.searchParams.append('page', pageParam.toString());
-      }
-
-      const response = await axios.get<EmployeesResponse>(url.toString());
-
-      return response.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        throw new Error(`HTTP error! Status: ${error.response?.status}`);
-      } else {
-        throw new Error(`Unexpected error: ${error}`);
-      }
-    }
-  }
-
-  public static async getEmployeesPage(page: number): Promise<EmployeesResponse> {
-    try {
-      const response = await axios.get<EmployeesResponse>(this.endPoint, {
-        params: { page },
+      const response = await this.axiosInstance.get<EmployeesResponse>('/employees', {
+        params: {
+          page: pageParam,
+          search: searchQuery || undefined,
+        },
       });
+
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -40,14 +24,15 @@ export class Employees {
       }
     }
   }
+
   public static async getAllEmployees(): Promise<Employee[]> {
     try {
-      const firstPage = await this.getEmployeesPage(1);
-      const totalPages = firstPage.last_page;
+      const firstPage = await this.getEmployees(1);
+      const totalPages = firstPage.last_page ?? 1;
       const pages = Array.from({ length: totalPages - 1 }, (_, i) => i + 2);
 
       const promises = pages.reduce<Promise<EmployeesResponse>[]>((acc, page) => {
-        acc.push(this.getEmployeesPage(page));
+        acc.push(this.getEmployees(page));
         return acc;
       }, []);
 

@@ -17,7 +17,7 @@ export function createEmployeeColumns(handleOpenModal: (employee: Employee) => v
         <img
           src={row.getValue('imageUrl')}
           alt={`${row.getValue('firstName')}`}
-          className="inline-block w-14 h-14 rounded-full object-cover"
+          className="inline-block w-16 h-16 rounded-full object-cover"
         />
       ),
     },

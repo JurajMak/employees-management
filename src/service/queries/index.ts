@@ -1,1 +1,1 @@
-export { useEmployees } from './useEmployees';
+export { useEmployees, useAllEmployees } from './useEmployees';

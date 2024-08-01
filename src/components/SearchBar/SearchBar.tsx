@@ -4,12 +4,13 @@ import { Input } from '../Input';
 
 interface OwnProps {
   onChange: (searchQuery: string) => void;
-  initialValue: string;
+  initialValue?: string;
   className?: string;
 }
 
 const SearchBar: React.FC<OwnProps> = ({ onChange, initialValue = '', className = 'max-w-[20dvw]' }) => {
   const [inputValue, setInputValue] = React.useState(initialValue);
+  const [isFocused, setIsFocused] = React.useState(false);
 
   React.useEffect(() => {
     if (inputValue.length === 0) {
@@ -30,12 +31,15 @@ const SearchBar: React.FC<OwnProps> = ({ onChange, initialValue = '', className 
             onChange(inputValue);
           }
         }}
-        onBlur={() => onChange(inputValue)}
-        placeholder="Search employees..."
+        onBlur={() => {
+          setIsFocused(false);
+          onChange(inputValue);
+        }}
+        onFocus={() => setIsFocused(true)}
+        placeholder="Search employees by name..."
       />
-      <Search size={25} className="absolute top-1.5 left-2" color="#E2E8F0" />
+      <Search size={25} className="absolute top-1.5 left-2" color={`${isFocused ? '#272E3E' : '#E2E8F0'}`} />
     </div>
   );
 };
-
 export default SearchBar;

@@ -1,5 +1,6 @@
 import { OrgChart } from '@/components/OrganizationChart';
-import { useAllEmployees } from '@/service/queries/useEmployees';
+import { useAllEmployees } from '@/service/queries';
+
 import { Ellipsis } from 'lucide-react';
 
 import React from 'react';

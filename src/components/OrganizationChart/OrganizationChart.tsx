@@ -26,22 +26,17 @@ const OrgChart: React.FC<OwnProps> = ({ data }) => {
 
     const { origin, translate } = panningRef.current;
 
-    const newX = event.clientX - origin.x;
-    const newY = event.clientY - origin.y;
-
-    const newTranslate = {
-      x: translate.x + newX,
-      y: translate.y + newY,
+    panningRef.current.translate = {
+      x: translate.x + event.clientX - origin.x,
+      y: translate.y + event.clientY - origin.y,
     };
 
-    panningRef.current.translate = newTranslate;
-
     if (chartRef.current) {
-      chartRef.current.style.transform = `translate(${newTranslate.x}px, ${newTranslate.y}px)`;
+      chartRef.current.style.transform = `translate(${panningRef.current.translate.x}px, ${panningRef.current.translate.y}px)`;
     }
 
     panningRef.current.origin = { x: event.clientX, y: event.clientY };
-  }, 10);
+  }, 15);
 
   const onMouseDown = (event: MouseEvent) => {
     panningRef.current.isPanning = true;
