@@ -1,30 +1,67 @@
-# React + TypeScript + Vite
+# Employee Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+The Employee Management App is a web application designed to manage and display employee information.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- A table displaying employee data with infinite scroll.
 
-## Expanding the ESLint configuration
+- A modal for viewing detailed information about employees.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- An organizational chart that visualizes the hierarchy of all employees.
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+### Employee Table
+
+- **Infinite Scroll**: The table displays employee data in a scrollable list. New data is loaded as the user scrolls down, optimizing performance and improving user experience.
+
+- **Row Details**: Each row includes a button that, when clicked, opens a modal showing detailed information about the employee.
+
+### Organization Chart
+
+- **Hierarchical View**: A dedicated page presents an organizational chart that visualizes the reporting structure and hierarchy of employees within the organization.
+
+## Initialization
+
+**Clone the Repository**
+
+Clone the repository from GitHub to your local machine using the following command:
+
+```bash
+
+git  clone  https://github.com/JurajMak/employees-management.git
+
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Load the Docker Image
+
+```bash
+
+docker  load  --input  {file-path}
+
+```
+
+Start the Docker Container
+
+```bash
+
+docker  run  -p  8000:8000  {image-id}
+
+```
+
+Use yarn to install required modules and packages.
+
+```bash
+
+yarn
+
+```
+
+Run the app using
+
+```bash
+
+yarn  start
+
+```
